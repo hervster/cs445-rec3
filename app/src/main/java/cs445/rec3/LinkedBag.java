@@ -210,7 +210,22 @@ public final class LinkedBag<E> implements BagInterface<E> {
         // TODO: Rewrite this method so that it works according to the contents
         // of the bags (this and other). Be sure to consider if other is null,
         // or a type other than LinkedBag.
-        return this == other;
+        //return this == other;
+
+        if (other == null) {return false;}
+
+        if (!(other instanceof LinkedBag)) { return false;}
+
+        LinkedBag B_Other = (LinkedBag) other;
+
+        if (this.getCurrentSize() != B_Other.getCurrentSize()) { return false;}
+
+        Node current = this.head;
+        while( current != null) {
+            if (this.getFrequencyOf(current.data) != B_Other.getFrequencyOf(current.data)) { return false;}
+            current = current.next;
+        }
+        return true;
     }
 
     /**
@@ -222,6 +237,25 @@ public final class LinkedBag<E> implements BagInterface<E> {
     public void removeDuplicatesOf(E anEntry) {
         // TODO: Write this method so that it removes all duplicate entries of
         // the given Entry from this bag while leaving the first instance of it
+
+        Node first = getReferenceTo(anEntry);
+
+        // x, y, z, x, A, B
+        if (first != null) {
+            
+            while (first.next != null)
+            {
+                if (anEntry.equals(first.next.data))
+                {
+                    first.next = first.next.next;
+                    size--;
+                }
+                else
+                {
+                    first = first.next;
+                }
+            }
+        }
     }
 
     /**
@@ -232,6 +266,14 @@ public final class LinkedBag<E> implements BagInterface<E> {
     public void removeAllDuplicates() {
         // TODO: Write this method so that it removes all duplicate entries from
         // this bag
+
+        Node current = this.head;
+
+        while(current != null)
+        {
+            removeDuplicatesOf(current.data);
+            current=current.next;
+        }
     }
 }
 

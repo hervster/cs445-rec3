@@ -235,7 +235,23 @@ public class ArrayBag<E> implements BagInterface<E> {
         // TODO: Rewrite this method so that it works according to the contents
         // of the bags (this and other). Be sure to consider if other is null,
         // or a type other than ArrayBag.
-        return this == other;
+
+        // return this == other;
+        if (other == null) {return false;}
+        if ( !(other instanceof ArrayBag))  { return false;}
+
+        ArrayBag B_Other = (ArrayBag) other;
+
+        if (B_Other.getCurrentSize() != this.getCurrentSize()) { return false;}
+
+        // Check if frequency of each method in one bag is the same as the other
+
+        for (int i=0; i< size; i++)
+        {
+            E common = bag[i];
+            if (this.getFrequencyOf(common) != B_Other.getFrequencyOf(common)) { return false; }
+        }
+        return true;
     }
 
     /**
@@ -247,6 +263,21 @@ public class ArrayBag<E> implements BagInterface<E> {
     public void removeDuplicatesOf(E anEntry){
         // TODO: Write this method so that it removes all duplicate entries of
         // the given Entry from this bag while leaving the first instance of it
+
+        // 
+        int firstIndex = getIndexOf(anEntry);
+        if (firstIndex >= 0)
+        {
+            for (int i = firstIndex + 1; i < size; i++ )
+            {
+                if (anEntry.equals(bag[i])) 
+                { 
+                    removeEntry(i);
+                    i--;
+                }
+            }
+        }
+
     }
 
     /**
@@ -257,6 +288,11 @@ public class ArrayBag<E> implements BagInterface<E> {
     public void removeAllDuplicates() {
         // TODO: Write this method so that it removes all duplicate entries from
         // this bag
+
+        for (int i = 0; i < size; i++)
+        {
+            removeDuplicatesOf(bag[i]);
+        }
     }
 }
 
